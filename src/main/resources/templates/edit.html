@@ -44,7 +44,7 @@
         <table class="table" th:object="${city}">
             <tr>
                 <td>Tên:</td>
-                <td><input type="text" th:field="*{name}">
+                <td><input type="text" th:field="*{name}" required>
                 <input type="hidden" th:field="*{id}">
                 </td>
             </tr>
@@ -56,19 +56,19 @@
             </tr>
             <tr>
                 <td>Diện tích:</td>
-                <td><input type="text" th:field="*{area}"></td>
+                <td><input type="text" th:field="*{area}" required></td>
             </tr>
             <tr>
                 <td>Dân số:</td>
-                <td><input type="text" th:field="*{population}"></td>
+                <td><input type="text" th:field="*{population}" required></td>
             </tr>
             <tr>
                 <td>GDP:</td>
-                <td><input type="text" th:field="*{gdp}"></td>
+                <td><input type="text" th:field="*{gdp}" required></td>
             </tr>
             <tr>
                 <td>Giới thiệu:</td>
-                <td><textarea th:field="*{detail}"></textarea></td>
+                <td><textarea th:field="*{detail}" required></textarea></td>
             </tr>
             <tr>
                 <td><input class="btn btn-primary" type="submit" value="Cập nhật" id="submit-bt"/></td>
