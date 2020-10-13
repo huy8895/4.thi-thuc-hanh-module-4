@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>home</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#submit-bt').click(function (event) {
+                var form = $('#newCityForm')[0];
+                var data = new FormData(form);
+                $("#submit-bt").prop("disabled", true);
+
+                $.ajax({
+                    enctype: 'multipart/form-data',
+                    type: "POST",
+                    data: data,
+                    url: "/city/create",
+                    // ngăn jQuery tự động chuyển đổi dữ liệu thành chuỗi truy vấn
+                    processData: false,
+                    contentType: false,
+                    success: function (newCity) {
+                        let template = `<div class="alert alert-success">
+                            <strong>Thêm thành công thành phố : ${newCity.name}</strong> <a href="/city" class="alert-link">Quay lại danh sách.</a>.
+                                        </div>`
+                        $("#newCityResponse").html(template);
+                    }
+                });
+                event.preventDefault();
+            });
+        });
+    </script>
+
+</head>
+<body>
+<div class="container">
+    <div class="col mt-5"><h1>Tạo mới thành phố</h1></div>
+    <p id="newCityResponse"></p>
+    <form action="" method="post" id="newCityForm" enctype="multipart/form-data">
+        <table class="table" th:object="${newCity}">
+            <tr>
+                <td>Tên:</td>
+                <td><input type="text" th:field="*{name}"></td>
+            </tr>
+            <tr>
+                <td>Quốc gia:</td>
+                <td><select th:field="*{country}">
+                    <option th:each="c:${countries}" th:value="${c.id}" th:text="${c.name}"></option>
+                </select>
+            </tr>
+            <tr>
+                <td>Diện tích:</td>
+                <td><input type="number" th:field="*{area}"></td>
+            </tr>
+            <tr>
+                <td>Dân số:</td>
+                <td><input type="number" th:field="*{population}"></td>
+            </tr>
+            <tr>
+                <td>GDP:</td>
+                <td><input type="number" th:field="*{gdp}"></td>
+            </tr>
+            <tr>
+                <td>Giới thiệu:</td>
+                <td><textarea th:field="*{detail}"></textarea></td>
+            </tr>
+            <tr>
+                <td><input class="button" type="submit" value="Tạo mới" id="submit-bt"/></td>
+                <td><a href="/">Quay trở lại danh sách</a> </td>
+            </tr>
+        </table>
+
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>home</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#submit-bt').click(function (event) {
+                var form = $('#newCityForm')[0];
+                var data = new FormData(form);
+                $("#submit-bt").prop("disabled", true);
+
+                $.ajax({
+                    enctype: 'multipart/form-data',
+                    type: "POST",
+                    data: data,
+                    url: "/city/create",
+                    // ngăn jQuery tự động chuyển đổi dữ liệu thành chuỗi truy vấn
+                    processData: false,
+                    contentType: false,
+                    success: function (newCity) {
+                        var respContent = "";
+                        respContent += "<span class='success'>city was created: [";
+                        respContent += newCity.name + " : ";
+                        respContent += newCity.country.name + "]</span>"
+                        $("#newCityResponse").html(respContent);
+                    }
+                });
+                event.preventDefault();
+            });
+        });
+    </script>
+
+</head>
+<body>
+<div class="container">
+    <div class="col mt-5"><h1>Chi tiết thành phố</h1></div>
+    <div id="newCityResponse"></div>
+    <form action="" method="post" id="newCityForm" enctype="multipart/form-data">
+        <table class="table" th:object="${city}">
+            <tr>
+                <td>Tên:</td>
+                <td th:text="${city.name}"></td>
+            </tr>
+            <tr>
+                <td>Quốc gia:</td>
+                <td th:text="${city.country.name}"></td>
+            </tr>
+            <tr>
+                <td>Diện tích:</td>
+                <td th:text="${city.area}"></td>
+            </tr>
+            <tr>
+                <td>Dân số:</td>
+                <td th:text="${city.population}"></td>
+            </tr>
+            <tr>
+                <td>GDP:</td>
+                <td th:text="${city.gdp}"></td>
+            </tr>
+            <tr>
+                <td>Giới thiệu:</td>
+                <td th:text="${city.detail}"></td>
+            </tr>
+            <tr>
+                <td><a href="/">quay lại danh sách</a> </td>
+                <td><a class="btn btn-primary" th:href="@{/city/edit/__${city.id}__}">Chỉnh sửa</a> </td>
+                <td><a class="btn btn-danger" th:href="@{/city/delete/__${city.id}__}">Xóa</a> </td>
+            </tr>
+        </table>
+
+    </form>
+</div>
+</body>
+</html>
